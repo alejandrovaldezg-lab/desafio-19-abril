@@ -7,6 +7,8 @@ import random
 st.set_page_config(page_title="Desafío 19 de Abril", layout="wide")
 
 # --- ESTILO PREMIUM CENTRADO TOTAL (CSS) ---
+# Se mantiene el estilo Neumórfico con alto contraste (Azul #131131)
+# REGLA: Sin letras blancas, todo en el azul profundo corporativo.
 st.markdown("""
     <style>
     @import url('https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css');
@@ -38,6 +40,7 @@ st.markdown("""
         color: #131131;
     }
 
+    /* Botones de respuesta: Texto #131131 siempre */
     .stButton>button {
         background: #e0e5ec;
         color: #131131 !important; 
@@ -79,17 +82,17 @@ st.markdown("""
         opacity: 0.6;
     }
 
+    /* Ocultar elementos de Streamlit */
     #MainMenu, footer, header {visibility: hidden;}
     </style>
     """, unsafe_allow_html=True)
 
-# --- RUTAS DE LOGOS (MODIFICACIÓN MÍNIMA REALIZADA AQUÍ) ---
-# Usamos la URL de SeekLogo para compatibilidad en la red
-logo_alcaldia = "https://seeklogo.com/images/A/alcaldia-de-caracas-2022-logo-E9237E4D8F-seeklogo.com.png"
+# --- RUTAS DE LOGOS ---
 desktop_path = os.path.expanduser("~/Desktop")
+logo_alcaldia = os.path.join(desktop_path, "LOGO ALCALDIA HORIZONTAL.png")
 logo_caracas = os.path.join(desktop_path, "CARACAS BELLA.png")
 
-# --- BANCO DE PREGUNTAS (Se mantiene igual) ---
+# --- BANCO DE 50 PREGUNTAS (Basado estrictamente en el texto) ---
 BANCO_PREGUNTAS = [
     {"pregunta": "¿Quién era el Gobernador de Venezuela en abril de 1810?", "opciones": ["Vicente de Emparan", "Fernando VII", "Juan de Casas"], "correcta": "Vicente de Emparan"},
     {"pregunta": "¿Cuál fue el pretexto inicial de Napoleón para ocupar España?", "opciones": ["Invadir Portugal", "Derrocar a Carlos IV", "Unirse al Cabildo"], "correcta": "Invadir Portugal"},
@@ -155,8 +158,8 @@ if 'paso' not in st.session_state:
 # --- LÓGICA DE INICIO ---
 if st.session_state.paso == -1:
     st.markdown('<div class="main-container">', unsafe_allow_html=True)
-    # Mostramos el logo directamente desde la URL
-    st.image(logo_alcaldia, width=450)
+    if os.path.exists(logo_alcaldia):
+        st.image(logo_alcaldia, width=450)
     st.markdown("<h1>Desafío: 19 de Abril</h1>", unsafe_allow_html=True)
     st.markdown("""
         <div class="neumorphic-card" style="margin-top:0px; font-size: 24px; font-weight: 700;">
@@ -185,7 +188,7 @@ elif 0 <= st.session_state.paso < 10:
     cols_h = st.columns([1, 2, 1])
     with cols_h[1]:
         l, r = st.columns(2)
-        l.image(logo_alcaldia, width=150)
+        if os.path.exists(logo_alcaldia): l.image(logo_alcaldia, width=150)
         if os.path.exists(logo_caracas): r.image(logo_caracas, width=120)
 
     p = st.session_state.preguntas_seleccionadas[st.session_state.paso]
@@ -229,15 +232,43 @@ else:
     pts = st.session_state.puntos
     seg = st.session_state.tiempo_total
 
-    # --- MENSAJES DE RESULTADO ---
+    # --- LISTA EXTENDIDA DE MENSAJES GRACIOSOS ---
+    msg_perfecto = [
+        f"¡MÉRRR...ITO TOTAL! 🏆 Eres Francisco Salías renacido. Respondiste todo en {seg}s. ¡Pide tu estatua en la Plaza Bolívar!",
+        f"¡NIVEL PRÓCER! 🎖️ Has dejado a Emparan en el exilio con esos {pts}/10. Caracas está orgullosa de tu memoria.",
+        f"¡DIPUTADO DEL PUEBLO! 📜 Madariaga te daría la mano (y no señas). {pts} puntos y una velocidad de rayo independentista."
+    ]
+    msg_alto = [
+        f"¡CASI MANTUANO! ☕ {pts}/10. Te faltó un pelito de pardo para ser perfecto. ¡Muy buen conocimiento, patriota!",
+        f"¡DIGNO HIJO DE CARACAS! 🏛️ Superaste el reto con {pts} puntos. Estás listo para firmar el acta del 19 de abril.",
+        f"¡CASI DIPUTADO! 📜 {pts}/10. Emparan te tiene miedo. Un poco más y Napoleón se retira de la península por tu culpa."
+    ]
+    msg_medio = [
+        f"ESTÁS COMO EMPARAN... 🤨 Con un pie en el barco y otro en el Cabildo. {pts}/10. ¡Dale otra leída al acta!",
+        f"¡CUIDADO CON LA REGENCIA! 🏰 Sacaste {pts}. Estás en el limbo entre ser patriota o quedarte en casa el Jueves Santo.",
+        f"ESTÁS EN EL BALCÓN... 👀 Pero Madariaga no sabe si hacerte señas de sí o de no. {pts}/10. ¡Puedes mejorar!"
+    ]
+    msg_bajo = [
+        f"¡AY PAPÁ, A ESTUDIAR! 📕 {pts}/10... Te mandaron a cuidar el Castillo de San Carlos por despistado. ¡La patria te necesita!",
+        f"¡NIVEL REALISTA! 🤴 ¿Sólo {pts}? Emparan sabe más de historia que tú ahora mismo. ¡Vuelve a intentarlo!",
+        f"¡TE QUEDASTE EN EL REZO! 🕯️ El Jueves Santo pasó y tú seguías en la Catedral. {pts} puntos. ¡Repite el reto!"
+    ]
+    msg_fail = [
+        f"¡PUES YO TAMPOCO QUIERO MANDO! 🤷‍♂️ Con {pts}/10 mejor vete con Emparan a Cádiz. ¡La historia se repite si no la estudias!",
+        f"¡ALERTA ROJA! 🚨 Napoleón nos conquista si dependemos de tu memoria. {pts} puntos. ¡Regresa al seminario!",
+        f"¡SOCORRO! 🆘 Estás más perdido que Fernando VII en el castillo. {pts}/10. ¡Reintenta antes de que llegue el 5 de julio!"
+    ]
+
     if pts == 10:
-        tit, col, msg = "¡VIVA LA PATRIA! 🏆", "#1a237e", f"¡MÉRRR...ITO TOTAL! 🏆 Eres Francisco Salías renacido. Respondiste todo en {seg}s."
+        tit, col, msg = "¡VIVA LA PATRIA! 🏆", "#1a237e", random.choice(msg_perfecto)
     elif pts >= 8:
-        tit, col, msg = "¡CASI PERFECTO! 📜", "#2e7d32", f"¡DIGNO HIJO DE CARACAS! 🏛️ Superaste el reto con {pts} puntos."
+        tit, col, msg = "¡CASI PERFECTO! 📜", "#2e7d32", random.choice(msg_alto)
     elif pts >= 6:
-        tit, col, msg = "¡PASASTE RASPAO'! 🤨", "#f57c00", f"ESTÁS COMO EMPARAN... 🤨 Con un pie en el barco y otro en el Cabildo. {pts}/10."
+        tit, col, msg = "¡PASASTE RASPAO'! 🤨", "#f57c00", random.choice(msg_medio)
+    elif pts >= 4:
+        tit, col, msg = "¡PÉSIMO SERVICIO! 📕", "#d32f2f", random.choice(msg_bajo)
     else:
-        tit, col, msg = "¡A CÁDIZ DE UNA! 🤷‍♂️", "#b71c1c", f"¡AY PAPÁ, A ESTUDIAR! 📕 Sacaste {pts}/10. La patria te necesita más preparado."
+        tit, col, msg = "¡A CÁDIZ DE UNA! 🤷‍♂️", "#b71c1c", random.choice(msg_fail)
 
     st.markdown(f"<h1 style='color:{col} !important;'>{tit}</h1>", unsafe_allow_html=True)
     st.markdown(f"<div style='font-size: 45px; font-weight: 900; color: {col};'>{pts}/10 PUNTOS</div>", unsafe_allow_html=True)
@@ -256,3 +287,4 @@ else:
     if os.path.exists(logo_caracas):
         st.image(logo_caracas, width=150)
     st.markdown('</div>', unsafe_allow_html=True)
+
