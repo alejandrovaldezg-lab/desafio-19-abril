@@ -8,6 +8,7 @@ st.set_page_config(page_title="Desafío 19 de Abril", layout="wide")
 
 # --- ESTILO PREMIUM CENTRADO TOTAL (CSS) ---
 # Se mantiene el estilo Neumórfico con alto contraste (Azul #131131)
+# REGLA: Sin letras blancas, todo en el azul profundo corporativo.
 st.markdown("""
     <style>
     @import url('https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css');
@@ -36,9 +37,10 @@ st.markdown("""
         border: 1px solid rgba(255,255,255,0.4);
         width: 100%;
         animation: fadeInUp 0.8s;
+        color: #131131;
     }
 
-    /* Botones de respuesta grandes y negritos */
+    /* Botones de respuesta: Texto #131131 siempre */
     .stButton>button {
         background: #e0e5ec;
         color: #131131 !important; 
@@ -90,48 +92,58 @@ desktop_path = os.path.expanduser("~/Desktop")
 logo_alcaldia = os.path.join(desktop_path, "LOGO ALCALDIA HORIZONTAL.png")
 logo_caracas = os.path.join(desktop_path, "CARACAS BELLA.png")
 
-# --- BANCO DE PREGUNTAS (Basado en el documento oficial) ---
+# --- BANCO DE 50 PREGUNTAS (Basado estrictamente en el texto) ---
 BANCO_PREGUNTAS = [
-    {"pregunta": "¿Quién era el Gobernador y Capitán General de Venezuela en abril de 1810?", "opciones": ["Vicente de Emparan", "Fernando VII", "Juan de Casas"], "correcta": "Vicente de Emparan"},
-    {"pregunta": "¿Qué suceso europeo provocó el vacío de poder en las provincias americanas?", "opciones": ["La Revolución Francesa", "Las Abdicaciones de Bayona", "La Batalla de Waterloo"], "correcta": "Las Abdicaciones de Bayona"},
-    {"pregunta": "¿A quién entregó Napoleón la corona española tras la renuncia de Fernando VII?", "opciones": ["José Bonaparte", "Luis XIV", "Carlos V"], "correcta": "José Bonaparte"},
-    {"pregunta": "¿Qué día ocurrió el levantamiento popular en Madrid contra las tropas francesas?", "opciones": ["5 de julio", "12 de octubre", "2 de mayo de 1808"], "correcta": "2 de mayo de 1808"},
-    {"pregunta": "¿Cuál era la base legal de los caraqueños para formar una Junta propia?", "opciones": ["El Derecho Divino", "El principio de Vacío de Poder", "El Tratado de Tordesillas"], "correcta": "El principio de Vacío de Poder"},
-    {"pregunta": "¿Qué institución lideró la transformación política el 19 de abril?", "opciones": ["La Real Audiencia", "El Ayuntamiento (Cabildo)", "La Iglesia"], "correcta": "El Ayuntamiento (Cabildo)"},
-    {"pregunta": "¿Por qué el 19 de abril de 1810 era un día de especial concurrencia?", "opciones": ["Era Jueves Santo", "Era Año Nuevo", "Se celebraba un natalicio"], "correcta": "Era Jueves Santo"},
-    {"pregunta": "¿Qué joven patriota detuvo a Emparan en la puerta de la Catedral?", "opciones": ["Simón Bolívar", "Francisco Salías", "Antonio José de Sucre"], "correcta": "Francisco Salías"},
-    {"pregunta": "¿A quién se conocía como el 'Diputado del Clero y del Pueblo'?", "opciones": ["José Cortés de Madariaga", "Juan Germán Roscio", "Feliciano Palacios"], "correcta": "José Cortés de Madariaga"},
-    {"pregunta": "¿Qué grupo social representaba José Félix Ribas en el ayuntamiento?", "opciones": ["Los Peninsulares", "Los Pardos", "El Clero"], "correcta": "Los Pardos"},
-    {"pregunta": "¿Cómo se llamó a la estrategia de gobernar en nombre del rey cautivo?", "opciones": ["La Máscara de Fernando VII", "El Plan Caracas", "La Regencia Criolla"], "correcta": "La Máscara de Fernando VII"},
-    {"pregunta": "¿Cuál fue la respuesta unánime del pueblo en la Plaza Mayor?", "opciones": ["¡Sí lo queremos!", "¡No lo queremos!", "¡Queremos al Rey!"], "correcta": "¡No lo queremos!"},
-    {"pregunta": "¿Cuál fue la frase final de Emparan al renunciar al mando?", "opciones": ["'Volveré y seré millones'", "'Pues yo tampoco quiero mando'", "'Pueblo ingrato'"], "correcta": "'Pues yo tampoco quiero mando'"},
-    {"pregunta": "¿Qué provincia se negó a reconocer la autoridad de la Junta de Caracas?", "opciones": ["Cumaná", "Coro", "Mérida"], "correcta": "Coro"},
-    {"pregunta": "¿Cuál de estas provincias fue aliada inicial del movimiento caraqueño?", "opciones": ["Maracaibo", "Guayana", "Barinas"], "correcta": "Barinas"},
-    {"pregunta": "¿En qué se convirtió el movimiento de 1810 apenas 15 meses después?", "opciones": ["En una Monarquía", "En la Independencia del 5 de julio", "En un tratado de paz"], "correcta": "En la Independencia del 5 de julio"},
-    {"pregunta": "¿Qué intelectual escribió sobre el inicio de esta nueva era en 1810?", "opciones": ["Andrés Bello", "Simón Rodríguez", "Francisco de Miranda"], "correcta": "Andrés Bello"},
-    {"pregunta": "¿Qué himno nacional tiene sus raíces en los versos inspirados por esta gesta?", "opciones": ["Gloria al Bravo Pueblo", "Caracas Bella", "Himno a la Alegría"], "correcta": "Gloria al Bravo Pueblo"},
-    {"pregunta": "¿Quién fue el secretario escribano del nuevo Gobierno formado ese día?", "opciones": ["José Tomás Santana", "Juan Germán Roscio", "Lino de Clemente"], "correcta": "José Tomás Santana"},
-    {"pregunta": "¿Cómo se llamaba oficialmente la Junta formada el 19 de abril?", "opciones": ["Junta de Guerra", "Junta Conservadora de los Derechos de Fernando VII", "Junta Republicana"], "correcta": "Junta Conservadora de los Derechos de Fernando VII"},
-    {"pregunta": "¿Qué ciudad española era el último refugio del Consejo de Regencia?", "opciones": ["Madrid", "Sevilla", "Cádiz"], "correcta": "Cádiz"},
-    {"pregunta": "¿Qué militar ordenó a la guardia de Emparan no intervenir?", "opciones": ["Juan Pablo Ayala", "El propio comandante de guardia", "Simón Bolívar"], "correcta": "El propio comandante de guardia"},
-    {"pregunta": "¿Qué miembro de la aristocracia era el rector del seminario en ese entonces?", "opciones": ["Juan Antonio Rojas Queipo", "Francisco Espejo", "Martín Tovar Ponte"], "correcta": "Juan Antonio Rojas Queipo"},
-    {"pregunta": "¿Qué figura representaba a los líderes de los pardos como diputado?", "opciones": ["Félix Sosa", "Juan Germán Roscio", "Nicolás de Castro"], "correcta": "Félix Sosa"},
-    {"pregunta": "¿Qué sentimiento predominaba en Caracas el 18 de abril al llegar noticias de España?", "opciones": ["Indiferencia", "Mucha tensión y agitación", "Alegría"], "correcta": "Mucha tensión y agitación"},
-    {"pregunta": "¿A qué se referían las 'Abdicaciones de Bayona'?", "opciones": ["A la muerte del Papa", "A la renuncia de los reyes de España", "A la creación de una ley"], "correcta": "A la renuncia de los reyes de España"},
-    {"pregunta": "¿Quién era el 'rey legítimo' según los criollos de 1810?", "opciones": ["Fernando VII", "Carlos IV", "José I"], "correcta": "Fernando VII"},
-    {"pregunta": "¿Qué hizo Madariaga mientras Emparan preguntaba al pueblo desde el balcón?", "opciones": ["Dormía", "Hacía señas de que dijeran 'No'", "Rezaba un rosario"], "correcta": "Hacía señas de que dijeran 'No'"},
-    {"pregunta": "¿Qué provincia del oriente venezolano se sumó al movimiento?", "opciones": ["Margarita", "Maracaibo", "Coro"], "correcta": "Margarita"},
-    {"pregunta": "¿En qué castillo fue recluido Fernando VII por Napoleón?", "opciones": ["Castillo de Valençay", "Castillo de Versalles", "Torre de Londres"], "correcta": "Castillo de Valençay"},
-    {"pregunta": "¿Qué institución sustituía al Gobernador en periodos de crisis históricamente?", "opciones": ["Los Alcaldes del Cabildo", "La Inquisición", "El Ejército"], "correcta": "Los Alcaldes del Cabildo"},
-    {"pregunta": "¿Qué personaje era el canónigo chileno que participó en la gesta?", "opciones": ["José Cortés de Madariaga", "Francisco de Berrío", "Agustín García"], "correcta": "José Cortés de Madariaga"},
-    {"pregunta": "¿Qué buscaba la Junta de Caracas al invitar a otras provincias?", "opciones": ["Venderles productos", "Crear un gobierno nacional unificado", "Hacer una guerra"], "correcta": "Crear un gobierno nacional unificado"},
-    {"pregunta": "¿Qué documento marcó el hito jurídico tras la destitución de Emparan?", "opciones": ["El Acta del 19 de abril", "La Carta de Jamaica", "El Decreto de Guerra a Muerte"], "correcta": "El Acta del 19 de abril"},
-    {"pregunta": "¿Quién fue el escribano real que firmó el acta del nuevo Gobierno?", "opciones": ["Fausto Viana", "Lino de Clemente", "Nicolás Anzola"], "correcta": "Fausto Viana"},
-    {"pregunta": "¿Qué lema usaron los mantuanos para calmar a la masa popular?", "opciones": ["¡Independencia o Muerte!", "¡Viva nuestro Rey, Fernando VII!", "¡Libertad para todos!"], "correcta": "¡Viva nuestro Rey, Fernando VII!"},
-    {"pregunta": "¿Qué militar era coronel y participó activamente en los eventos?", "opciones": ["Nicolás de Castro", "Francisco Salías", "Juan Pablo Ayala"], "correcta": "Nicolás de Castro"},
-    {"pregunta": "¿Qué día publicó Emparan sus proclamas exhortando a la fidelidad?", "opciones": ["17 de abril", "19 de abril", "1 de mayo"], "correcta": "17 de abril"},
-    {"pregunta": "¿Quiénes eran los 'Mantuanos'?", "opciones": ["La élite blanca criolla", "Los esclavizados", "Los soldados franceses"], "correcta": "La élite blanca criolla"},
-    {"pregunta": "¿Qué instrumento jurídico se considera la primera Constitución del continente?", "opciones": ["La de 1830", "La redactada por el Congreso de 1811", "La Constitución de Cádiz"], "correcta": "La redactada por el Congreso de 1811"}
+    {"pregunta": "¿Quién era el Gobernador de Venezuela en abril de 1810?", "opciones": ["Vicente de Emparan", "Fernando VII", "Juan de Casas"], "correcta": "Vicente de Emparan"},
+    {"pregunta": "¿Cuál fue el pretexto inicial de Napoleón para ocupar España?", "opciones": ["Invadir Portugal", "Derrocar a Carlos IV", "Unirse al Cabildo"], "correcta": "Invadir Portugal"},
+    {"pregunta": "¿A quién entregó Napoleón la corona tras la renuncia de los reyes?", "opciones": ["José Bonaparte", "Luis XIV", "Carlos V"], "correcta": "José Bonaparte"},
+    {"pregunta": "¿Cómo se llamó a la renuncia forzada de Fernando VII al trono?", "opciones": ["Abdicaciones de Bayona", "Tratado de Madrid", "Pacto de Caracas"], "correcta": "Abdicaciones de Bayona"},
+    {"pregunta": "¿Qué día ocurrió el levantamiento en Madrid contra los franceses?", "opciones": ["2 de mayo de 1808", "5 de julio", "19 de abril"], "correcta": "2 de mayo de 1808"},
+    {"pregunta": "¿Cuál era la base legal de los caraqueños para formar su Junta?", "opciones": ["El Vacío de Poder", "El Derecho Divino", "Leyes de Indias"], "correcta": "El Vacío de Poder"},
+    {"pregunta": "¿Qué institución lideró la transformación el 19 de abril?", "opciones": ["El Ayuntamiento (Cabildo)", "La Real Audiencia", "El Ejército"], "correcta": "El Ayuntamiento (Cabildo)"},
+    {"pregunta": "¿Por qué el 19 de abril era un día de mucha gente en la calle?", "opciones": ["Era Jueves Santo", "Era Navidad", "Se celebraba una feria"], "correcta": "Era Jueves Santo"},
+    {"pregunta": "¿Quién detuvo a Emparan en la puerta de la Catedral?", "opciones": ["Francisco Salías", "Simón Bolívar", "José Félix Ribas"], "correcta": "Francisco Salías"},
+    {"pregunta": "¿Cómo llamaban a Madariaga en el nuevo gobierno?", "opciones": ["Diputado del Pueblo", "Capitán Revolucionario", "Censor Real"], "correcta": "Diputado del Pueblo"},
+    {"pregunta": "¿Qué grupo social representaba Ribas en el ayuntamiento?", "opciones": ["Los Pardos", "Los Peninsulares", "Los Franceses"], "correcta": "Los Pardos"},
+    {"pregunta": "¿Cómo se llamó a gobernar en nombre del rey cautivo?", "opciones": ["Máscara de Fernando VII", "Plan Caracas", "Pacto Criollo"], "correcta": "Máscara de Fernando VII"},
+    {"pregunta": "¿Cuál fue el grito del pueblo en la Plaza Mayor?", "opciones": ["¡No lo queremos!", "¡Viva el Rey!", "¡Sí lo queremos!"], "correcta": "¡No lo queremos!"},
+    {"pregunta": "¿Qué frase dijo Emparan al renunciar al mando?", "opciones": ["Pues yo tampoco quiero mando", "Volveré y seré millones", "Pueblo ingrato"], "correcta": "Pues yo tampoco quiero mando"},
+    {"pregunta": "¿Qué provincia se negó a reconocer a la Junta de Caracas?", "opciones": ["Coro", "Cumaná", "Mérida"], "correcta": "Coro"},
+    {"pregunta": "¿Qué provincia del oriente fue aliada inicial de Caracas?", "opciones": ["Margarita", "Maracaibo", "Guayana"], "correcta": "Margarita"},
+    {"pregunta": "¿Cuántos meses pasaron de abril de 1810 a la Independencia?", "opciones": ["15 meses", "24 meses", "6 meses"], "correcta": "15 meses"},
+    {"pregunta": "¿Qué himno se inspiró en los versos de esta gesta?", "opciones": ["Gloria al Bravo Pueblo", "Caracas Bella", "Himno de Madrid"], "correcta": "Gloria al Bravo Pueblo"},
+    {"pregunta": "¿Quién fue el secretario escribano del nuevo Gobierno?", "opciones": ["José Tomás Santana", "Juan Germán Roscio", "Félix Sosa"], "correcta": "José Tomás Santana"},
+    {"pregunta": "¿Cómo se llamaba oficialmente la Junta formada ese día?", "opciones": ["Junta Conservadora de los Derechos de Fernando VII", "Junta de Guerra", "Consejo de Regencia"], "correcta": "Junta Conservadora de los Derechos de Fernando VII"},
+    {"pregunta": "¿Qué ciudad española era el último refugio del Consejo de Regencia?", "opciones": ["Cádiz", "Sevilla", "Madrid"], "correcta": "Cádiz"},
+    {"pregunta": "¿Qué militar ordenó a la guardia de Emparan no actuar?", "opciones": ["El comandante de guardia", "Simón Bolívar", "Juan Pablo Ayala"], "correcta": "El comandante de guardia"},
+    {"pregunta": "¿Qué miembro de la aristocracia era el rector del seminario?", "opciones": ["Juan Antonio Rojas Queipo", "Francisco Espejo", "Martín Tovar Ponte"], "correcta": "Juan Antonio Rojas Queipo"},
+    {"pregunta": "¿Qué sentimiento predominaba en Caracas el 18 de abril?", "opciones": ["Mucha tensión y agitación", "Indiferencia", "Alegría"], "correcta": "Mucha tensión y agitación"},
+    {"pregunta": "¿Quién era el 'rey legítimo' según los criollos de 1810?", "opciones": ["Fernando VII", "José I", "Napoleón"], "correcta": "Fernando VII"},
+    {"pregunta": "¿Qué hacía Madariaga detrás de Emparan en el balcón?", "opciones": ["Hacía señas de que dijeran 'No'", "Rezaba", "Dormía"], "correcta": "Hacía señas de que dijeran 'No'"},
+    {"pregunta": "¿En qué castillo fue recluido Fernando VII por Napoleón?", "opciones": ["Castillo en Francia", "Torre de Londres", "Castillo de Caracas"], "correcta": "Castillo en Francia"},
+    {"pregunta": "¿Qué buscaba Caracas al invitar a otras provincias?", "opciones": ["Gobierno nacional unificado", "Venderles café", "Hacer la guerra"], "correcta": "Gobierno nacional unificado"},
+    {"pregunta": "¿Qué documento marcó el hito jurídico tras la destitución?", "opciones": ["El Acta del 19 de abril", "La Carta de Jamaica", "Ley de Indias"], "correcta": "El Acta del 19 de abril"},
+    {"pregunta": "¿Qué lema usaron los mantuanos para calmar a la masa?", "opciones": ["¡Viva nuestro Rey, Fernando VII!", "¡Independencia o Muerte!", "¡Abajo Napoleón!"], "correcta": "¡Viva nuestro Rey, Fernando VII!"},
+    {"pregunta": "¿Qué día publicó Emparan sus proclamas pidiendo fidelidad?", "opciones": ["17 de abril", "19 de abril", "1 de mayo"], "correcta": "17 de abril"},
+    {"pregunta": "¿Quiénes eran los 'Mantuanos'?", "opciones": ["La élite blanca criolla", "Los soldados franceses", "Los campesinos"], "correcta": "La élite blanca criolla"},
+    {"pregunta": "¿Qué se considera el 19 de abril en términos de votación?", "opciones": ["Referéndum revocatorio improvisado", "Elección presidencial", "Censo"], "correcta": "Referéndum revocatorio improvisado"},
+    {"pregunta": "¿Qué provincia de los llanos se sumó al movimiento?", "opciones": ["Barinas", "Guayana", "Coro"], "correcta": "Barinas"},
+    {"pregunta": "¿Quién era el escribano real que firmó el acta nueva?", "opciones": ["Fausto Viana", "Lino de Clemente", "José Tomás Santana"], "correcta": "Fausto Viana"},
+    {"pregunta": "¿Qué país invadió Napoleón para llegar a Portugal en 1807?", "opciones": ["España", "Francia", "Italia"], "correcta": "España"},
+    {"pregunta": "¿Qué se redactó apenas 15 meses después de esta gesta?", "opciones": ["Primera Constitución Nacional", "El Acta de Bautismo", "Un tratado comercial"], "correcta": "Primera Constitución Nacional"},
+    {"pregunta": "¿Qué institución sustituía al gobernador en crisis históricas?", "opciones": ["Alcaldes del Cabildo", "Capitanes franceses", "La Iglesia"], "correcta": "Alcaldes del Cabildo"},
+    {"pregunta": "¿A qué hora fue invitado Emparan al Cabildo?", "opciones": ["A primera hora de la mañana", "Al atardecer", "A medianoche"], "correcta": "A primera hora de la mañana"},
+    {"pregunta": "¿Qué intelectual escribía sobre el inicio de esta nueva era?", "opciones": ["Andrés Bello", "Simón Rodríguez", "Juan Lovera"], "correcta": "Andrés Bello"},
+    {"pregunta": "¿Dónde se reunían los conspiradores en secreto?", "opciones": ["Casas y haciendas", "En la Catedral", "En el puerto"], "correcta": "Casas y haciendas"},
+    {"pregunta": "¿Qué argumento usaron los Cabildos sobre su estatus?", "opciones": ["Igual estatus que provincias españolas", "Eran esclavos", "Eran independientes"], "correcta": "Igual estatus que provincias españolas"},
+    {"pregunta": "¿Qué buscaba Napoleón realmente al invadir la península?", "opciones": ["La corona española", "Hacer turismo", "Salvar al Rey"], "correcta": "La corona española"},
+    {"pregunta": "¿Qué provincia aliada está en los Andes?", "opciones": ["Mérida", "Cumaná", "Coro"], "correcta": "Mérida"},
+    {"pregunta": "¿Qué provincia aliada está en el oriente?", "opciones": ["Cumaná", "Maracaibo", "Trujillo"], "correcta": "Cumaná"},
+    {"pregunta": "¿Quién representaba al pueblo como diputado junto a Madariaga?", "opciones": ["Juan Germán Roscio", "Vicente de Emparan", "Napoleón"], "correcta": "Juan Germán Roscio"},
+    {"pregunta": "¿Qué propuso Emparan para conservar el mando?", "opciones": ["Presidir él la nueva Junta", "Huir a España", "Nombrar a un francés"], "correcta": "Presidir él la nueva Junta"},
+    {"pregunta": "¿Cómo consideraba el Cabildo al Consejo de Regencia de Cádiz?", "opciones": ["Intermediario ilegítimo", "Líder supremo", "Amigo de Caracas"], "correcta": "Intermediario ilegítimo"},
+    {"pregunta": "¿En qué ciudad se formó la Junta española más relevante?", "opciones": ["Sevilla", "Cádiz", "Barcelona"], "correcta": "Sevilla"},
+    {"pregunta": "¿Qué título tenía Emparan?", "opciones": ["Gobernador y Capitán General", "Virrey", "Alcalde"], "correcta": "Gobernador y Capitán General"}
 ]
 
 # --- INICIALIZACIÓN DE ESTADO ---
@@ -150,13 +162,11 @@ if st.session_state.paso == -1:
         st.image(logo_alcaldia, width=450)
     st.markdown("<h1>Desafío: 19 de Abril</h1>", unsafe_allow_html=True)
     st.markdown("""
-        <div class="neumorphic-card" style="margin-top:0px;">
-            <div style="font-size: 24px; font-weight: 700; color: #131131;">
-                ¡Bienvenido, Patriota!<br><br>
-                ¿Crees conocer la historia real de la gesta caraqueña?<br>
-                Te retamos a responder <b>10 preguntas aleatorias</b> basadas en los archivos oficiales.<br><br>
-                <i>Pon tus pies en el suelo y demuestra tu conocimiento.</i>
-            </div>
+        <div class="neumorphic-card" style="margin-top:0px; font-size: 24px; font-weight: 700;">
+            ¡Bienvenido, Patriota!<br><br>
+            ¿Crees conocer la historia real de la gesta caraqueña?<br>
+            Responde <b>10 preguntas aleatorias</b> de los archivos oficiales.<br><br>
+            <i>Pon tus pies en el suelo y demuestra tu conocimiento.</i>
         </div>
     """, unsafe_allow_html=True)
     
@@ -175,8 +185,6 @@ if st.session_state.paso == -1:
 # --- PANTALLA DE PREGUNTAS ---
 elif 0 <= st.session_state.paso < 10:
     st.markdown('<div class="main-container">', unsafe_allow_html=True)
-    
-    # Cabecera con logos
     cols_h = st.columns([1, 2, 1])
     with cols_h[1]:
         l, r = st.columns(2)
@@ -185,24 +193,21 @@ elif 0 <= st.session_state.paso < 10:
 
     p = st.session_state.preguntas_seleccionadas[st.session_state.paso]
 
-    # Feedback visual rápido
     if st.session_state.feedback:
-        color = "#c8e6c9" if st.session_state.feedback == "correct" else "#ffcdd2"
+        color_div = "#c8e6c9" if st.session_state.feedback == "correct" else "#ffcdd2"
         txt = "✨ ¡EXCELENTE! ✨" if st.session_state.feedback == "correct" else "❌ ¡POR UN PELO! ❌"
-        st.markdown(f"<div style='background-color:{color}; padding:10px; border-radius:15px; font-weight:900; color:#131131; border:3px solid #131131;'>{txt}</div>", unsafe_allow_html=True)
+        st.markdown(f"<div style='background-color:{color_div}; padding:10px; border-radius:15px; font-weight:900; color:#131131; border:3px solid #131131;'>{txt}</div>", unsafe_allow_html=True)
         time.sleep(0.6)
         st.session_state.feedback = None
         st.rerun()
 
-    # Card de pregunta
     st.markdown(f'''
         <div class="neumorphic-card">
-            <div style="font-size: 16px; font-weight: 700; color: #131131; opacity: 0.5; margin-bottom:10px;">PROGRESO: {st.session_state.paso + 1} / 10</div>
+            <div style="font-size: 16px; font-weight: 700; opacity: 0.5; margin-bottom:10px;">PROGRESO: {st.session_state.paso + 1} / 10</div>
             <div class="pregunta-texto">{p["pregunta"]}</div>
         </div>
     ''', unsafe_allow_html=True)
     
-    # Opciones A, B, C
     letras = ["A", "B", "C"]
     for i, opcion in enumerate(p["opciones"]):
         if st.button(f"**{letras[i]}**: {opcion}", key=f"btn_{st.session_state.paso}_{i}"):
@@ -211,7 +216,6 @@ elif 0 <= st.session_state.paso < 10:
                 st.session_state.feedback = "correct"
             else:
                 st.session_state.feedback = "wrong"
-            
             st.session_state.paso += 1
             if st.session_state.paso == 10:
                 st.session_state.tiempo_total = round(time.time() - st.session_state.inicio_tiempo, 2)
@@ -227,35 +231,53 @@ else:
     
     pts = st.session_state.puntos
     seg = st.session_state.tiempo_total
-    
-    # Mensajes cómicos y variados
-    if pts == 10:
-        tit = "¡MÉRRR...ITO TOTAL! 🏆"
-        color = "#1a237e"
-        msg = f"¡Eres el mismísimo Francisco Salías renacido! Has respondido todo en {seg}s. Caracas está orgullosa, ¡pide tu estatua en la Plaza Bolívar!"
-    elif pts >= 8:
-        tit = "¡CASI DIPUTADO! 📜"
-        color = "#2e7d32"
-        msg = f"¡Brillante! {pts}/10. Te faltó un pelito de pardo para ser perfecto. Madariaga te daría la mano (y te haría señas)."
-    elif pts >= 6:
-        tit = "ESTÁS COMO EMPARAN... 🤨"
-        color = "#f57c00"
-        msg = f"Sacaste {pts}/10. Estás con un pie en el barco y otro en el Cabildo. ¡Dale otra leída al acta para que no te boten!"
-    elif pts >= 4:
-        tit = "¡AY PAPÁ, A ESTUDIAR! 📕"
-        color = "#d32f2f"
-        msg = f"{pts}/10... Te mandaron a cuidar el Castillo de San Carlos por despistado. ¡La patria necesita que sepas más!"
-    else:
-        tit = "¡PUES YO TAMPOCO QUIERO MANDO! 🤷‍♂️"
-        color = "#b71c1c"
-        msg = f"¿{pts}/10? Emparan sabe más de historia que tú. ¡Vuelve a intentarlo antes de que Napoleón nos conquiste!"
 
-    st.markdown(f"<h1 style='color:{color} !important;'>{tit}</h1>", unsafe_allow_html=True)
-    st.markdown(f"<div style='font-size: 45px; font-weight: 900; color: {color};'>{pts}/10 PUNTOS</div>", unsafe_allow_html=True)
+    # --- LISTA EXTENDIDA DE MENSAJES GRACIOSOS ---
+    msg_perfecto = [
+        f"¡MÉRRR...ITO TOTAL! 🏆 Eres Francisco Salías renacido. Respondiste todo en {seg}s. ¡Pide tu estatua en la Plaza Bolívar!",
+        f"¡NIVEL PRÓCER! 🎖️ Has dejado a Emparan en el exilio con esos {pts}/10. Caracas está orgullosa de tu memoria.",
+        f"¡DIPUTADO DEL PUEBLO! 📜 Madariaga te daría la mano (y no señas). {pts} puntos y una velocidad de rayo independentista."
+    ]
+    msg_alto = [
+        f"¡CASI MANTUANO! ☕ {pts}/10. Te faltó un pelito de pardo para ser perfecto. ¡Muy buen conocimiento, patriota!",
+        f"¡DIGNO HIJO DE CARACAS! 🏛️ Superaste el reto con {pts} puntos. Estás listo para firmar el acta del 19 de abril.",
+        f"¡CASI DIPUTADO! 📜 {pts}/10. Emparan te tiene miedo. Un poco más y Napoleón se retira de la península por tu culpa."
+    ]
+    msg_medio = [
+        f"ESTÁS COMO EMPARAN... 🤨 Con un pie en el barco y otro en el Cabildo. {pts}/10. ¡Dale otra leída al acta!",
+        f"¡CUIDADO CON LA REGENCIA! 🏰 Sacaste {pts}. Estás en el limbo entre ser patriota o quedarte en casa el Jueves Santo.",
+        f"ESTÁS EN EL BALCÓN... 👀 Pero Madariaga no sabe si hacerte señas de sí o de no. {pts}/10. ¡Puedes mejorar!"
+    ]
+    msg_bajo = [
+        f"¡AY PAPÁ, A ESTUDIAR! 📕 {pts}/10... Te mandaron a cuidar el Castillo de San Carlos por despistado. ¡La patria te necesita!",
+        f"¡NIVEL REALISTA! 🤴 ¿Sólo {pts}? Emparan sabe más de historia que tú ahora mismo. ¡Vuelve a intentarlo!",
+        f"¡TE QUEDASTE EN EL REZO! 🕯️ El Jueves Santo pasó y tú seguías en la Catedral. {pts} puntos. ¡Repite el reto!"
+    ]
+    msg_fail = [
+        f"¡PUES YO TAMPOCO QUIERO MANDO! 🤷‍♂️ Con {pts}/10 mejor vete con Emparan a Cádiz. ¡La historia se repite si no la estudias!",
+        f"¡ALERTA ROJA! 🚨 Napoleón nos conquista si dependemos de tu memoria. {pts} puntos. ¡Regresa al seminario!",
+        f"¡SOCORRO! 🆘 Estás más perdido que Fernando VII en el castillo. {pts}/10. ¡Reintenta antes de que llegue el 5 de julio!"
+    ]
+
+    if pts == 10:
+        tit, col, msg = "¡VIVA LA PATRIA! 🏆", "#1a237e", random.choice(msg_perfecto)
+    elif pts >= 8:
+        tit, col, msg = "¡CASI PERFECTO! 📜", "#2e7d32", random.choice(msg_alto)
+    elif pts >= 6:
+        tit, col, msg = "¡PASASTE RASPAO'! 🤨", "#f57c00", random.choice(msg_medio)
+    elif pts >= 4:
+        tit, col, msg = "¡PÉSIMO SERVICIO! 📕", "#d32f2f", random.choice(msg_bajo)
+    else:
+        tit, col, msg = "¡A CÁDIZ DE UNA! 🤷‍♂️", "#b71c1c", random.choice(msg_fail)
+
+    st.markdown(f"<h1 style='color:{col} !important;'>{tit}</h1>", unsafe_allow_html=True)
+    st.markdown(f"<div style='font-size: 45px; font-weight: 900; color: {col};'>{pts}/10 PUNTOS</div>", unsafe_allow_html=True)
     st.markdown(f"<div class='tiempo-texto' style='font-size:25px;'>⏱️ Tiempo: {seg} segundos</div>", unsafe_allow_html=True)
     st.markdown(f"<div style='font-size: 22px; font-weight: 700; margin: 30px 0; color:#131131;'>{msg}</div>", unsafe_allow_html=True)
     
-    if st.button("🔄 REINTENTAR (Preguntas Nuevas)"):
+    st.markdown("<div style='font-weight:700; color:#131131; margin-bottom:10px;'>📸 ¡Toma un capture y presume tu patriotismo!</div>", unsafe_allow_html=True)
+
+    if st.button("🔄 REINTENTAR (Nuevas Preguntas)"):
         st.session_state.paso = -1
         st.session_state.puntos = 0
         st.session_state.feedback = None
