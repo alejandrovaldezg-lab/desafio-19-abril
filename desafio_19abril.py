@@ -89,7 +89,7 @@ st.markdown("""
 # --- RUTAS DE LOGOS (URLs para Web) ---
 # Se usan URLs directas para que funcione en cualquier servidor
 logo_alcaldia = "https://upload.wikimedia.org/wikipedia/commons/b/be/Logo_Alcald%C3%ADa_Caracas_%282021-2025%29.png"
-logo_caracas = "URL_DE_TU_OTRA_IMAGEN_AQUI" # Sustituye por la URL de Caracas Bella
+logo_caracas = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSN_NSenNxemRIXYGLNSXBCj7fcPzvysLD2Fg&s" # Sustituye por la URL de Caracas Bella
 
 # --- BANCO DE 50 PREGUNTAS (Basado estrictamente en el texto) ---
 BANCO_PREGUNTAS = [
@@ -180,7 +180,7 @@ if st.session_state.paso == -1:
             st.session_state.paso = 0
             st.rerun()
     
-    if os.path.exists(logo_caracas): st.image(logo_caracas, width=180)
+    st.image(logo_caracas, width=180)
     st.markdown('</div>', unsafe_allow_html=True)
 
 # --- PANTALLA DE PREGUNTAS ---
@@ -192,7 +192,7 @@ elif 0 <= st.session_state.paso < 10:
     with col_l: 
         st.image(logo_alcaldia, width=150)
     with col_r:
-        if os.path.exists(logo_caracas): st.image(logo_caracas, width=120)
+        st.image(logo_caracas, width=180)
 
     p_actual = st.session_state.preguntas_seleccionadas[st.session_state.paso]
 
