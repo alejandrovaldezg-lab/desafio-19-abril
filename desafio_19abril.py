@@ -156,7 +156,7 @@ if 'paso' not in st.session_state:
 # --- LÓGICA DE INICIO ---
 if st.session_state.paso == -1:
     st.markdown('<div class="main-container">', unsafe_allow_html=True)
-    st.image(logo_alcaldia, width=450)
+    st.image(logo_alcaldia, width=150)
     
     st.markdown("<h1>Desafío Histórico</h1>", unsafe_allow_html=True)
     st.markdown("""
