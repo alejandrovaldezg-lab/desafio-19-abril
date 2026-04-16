@@ -86,10 +86,10 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- RUTAS DE LOGOS ---
-desktop_path = os.path.expanduser("~/Desktop")
-logo_alcaldia = os.path.join(desktop_path, "LOGO ALCALDIA HORIZONTAL.png")
-logo_caracas = os.path.join(desktop_path, "CARACAS BELLA.png")
+# --- RUTAS DE LOGOS (URLs para Web) ---
+# Se usan URLs directas para que funcione en cualquier servidor
+logo_alcaldia = "https://upload.wikimedia.org/wikipedia/commons/b/be/Logo_Alcald%C3%ADa_Caracas_%282021-2025%29.png"
+logo_caracas = "URL_DE_TU_OTRA_IMAGEN_AQUI" # Sustituye por la URL de Caracas Bella
 
 # --- BANCO DE 50 PREGUNTAS (Basado estrictamente en el texto) ---
 BANCO_PREGUNTAS = [
@@ -156,7 +156,7 @@ if 'paso' not in st.session_state:
 # --- LÓGICA DE INICIO ---
 if st.session_state.paso == -1:
     st.markdown('<div class="main-container">', unsafe_allow_html=True)
-    if os.path.exists(logo_alcaldia): st.image(logo_alcaldia, width=450)
+    st.image(logo_alcaldia, width=450)
     
     st.markdown("<h1>Desafío Histórico</h1>", unsafe_allow_html=True)
     st.markdown("""
@@ -190,7 +190,7 @@ elif 0 <= st.session_state.paso < 10:
     # Logos centrados arriba
     col_l, col_r = st.columns(2)
     with col_l: 
-        if os.path.exists(logo_alcaldia): st.image(logo_alcaldia, width=150)
+        st.image(logo_alcaldia, width=150)
     with col_r:
         if os.path.exists(logo_caracas): st.image(logo_caracas, width=120)
 
