@@ -180,7 +180,7 @@ if st.session_state.paso == -1:
             st.session_state.paso = 0
             st.rerun()
     
-    st.image(logo_caracas, width=180)
+    if os.path.exists(logo_caracas): st.image(logo_caracas, width=180)
     st.markdown('</div>', unsafe_allow_html=True)
 
 # --- PANTALLA DE PREGUNTAS ---
@@ -192,7 +192,7 @@ elif 0 <= st.session_state.paso < 10:
     with col_l: 
         st.image(logo_alcaldia, width=150)
     with col_r:
-        st.image(logo_caracas, width=180)
+        if os.path.exists(logo_caracas): st.image(logo_caracas, width=180)
 
     p_actual = st.session_state.preguntas_seleccionadas[st.session_state.paso]
 
