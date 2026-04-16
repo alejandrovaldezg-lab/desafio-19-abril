@@ -89,7 +89,7 @@ st.markdown("""
 # --- RUTAS DE LOGOS (URLs para Web) ---
 # Se usan URLs directas para que funcione en cualquier servidor
 logo_alcaldia = "https://upload.wikimedia.org/wikipedia/commons/b/be/Logo_Alcald%C3%ADa_Caracas_%282021-2025%29.png"
-logo_caracas = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSN_NSenNxemRIXYGLNSXBCj7fcPzvysLD2Fg&s" # Sustituye por la URL de Caracas Bella
+logo_caracas = "url logo ccs" # Sustituye por la URL de Caracas Bella
 
 # --- BANCO DE 50 PREGUNTAS (Basado estrictamente en el texto) ---
 BANCO_PREGUNTAS = [
